@@ -1,24 +1,30 @@
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 
 export interface ResponseData {
+  success: boolean
   code: number
   msg: string
   data: any
 }
 
-const request = axios.create({
-  baseURL: 'http://localhost:6281',
+const instance = axios.create({
+  baseURL: process.env.API_URL,
   timeout: 5 * 60 * 1000,
+  withCredentials: true,
 })
 
-request.interceptors.request.use(
+instance.interceptors.request.use(
   (config) => config,
   (error) => Promise.reject(error)
 )
 
-request.interceptors.response.use(
+instance.interceptors.response.use(
   (response) => response.data,
   (error) => Promise.reject(error)
 )
+
+function request(config: AxiosRequestConfig): any {
+  return instance(config)
+}
 
 export default request

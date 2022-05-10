@@ -1,6 +1,7 @@
 import Document, { Head, Html, Main, NextScript } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
 import React from 'react'
+import { recordAccess } from '@/api/base'
 
 export default class MyDocument extends Document {
   render() {
@@ -9,11 +10,6 @@ export default class MyDocument extends Document {
         <Head>
           <meta name="description" content="SunMoon的个人网站" />
           <link rel="icon" href="/favicon.ico" />
-          <meta name="viewport" content="initial-scale=1, width=device-width" />
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-          />
         </Head>
         <body>
           {/* 👇 Here's the script */}

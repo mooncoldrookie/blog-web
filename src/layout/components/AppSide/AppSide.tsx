@@ -1,75 +1,82 @@
-import React, { memo, useEffect } from 'react'
-import Skeleton from '@mui/material/Skeleton'
-import Box from '@mui/material/Box'
+import React, { memo, useEffect, useState } from 'react'
 
-import { useAppDispatch, useAppSelector } from '@/app/hooks'
-import {
-  selectLoading,
-  selectRecommendList,
-  selectTagList,
-  setLoading,
-  setRecommendList,
-  setTagList,
-} from '@/app/reducer/asideSlice'
-import { useAppAside } from '@/layout/components/AppSide/hooks'
-
-import { Recommend, SideWrap, TagCategory } from './styled'
+import { Recommend, SideWrap, AsideTagWrapper } from './styled'
 import RecommendList from './RecommendList'
 import TagList from './TagList'
+import { getRecommendedPosts, getTags } from '@/api/home'
+import produce from 'immer'
+
+const AsideTag = () => {
+  const [tags, setTags] = useState([])
+  const [loading, setLoading] = useState(false)
+  useEffect(() => {
+    async function fetchTags() {
+      try {
+        setLoading(true)
+        const res = await getTags()
+        if (res.success) {
+          setTags(
+            produce((draft) => {
+              draft.push(...res.data)
+            })
+          )
+        }
+      } catch (e) {
+        console.log(e)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchTags()
+  }, [])
+  return (
+    <AsideTagWrapper>
+      <h3 className="title">标签</h3>
+      <div className="tags-content">
+        <TagList list={tags} />
+      </div>
+    </AsideTagWrapper>
+  )
+}
+
+const AsideRecommended = () => {
+  const [recommended, setRecommended] = useState([])
+  const [loading, setLoading] = useState(false)
+  useEffect(() => {
+    async function fetchRecommended() {
+      try {
+        setLoading(true)
+        const res = await getRecommendedPosts()
+        if (res.success) {
+          setRecommended(
+            produce((draft) => {
+              draft.push(...res.data)
+            })
+          )
+        }
+      } catch (e) {
+        console.log(e)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchRecommended()
+  }, [])
+  return (
+    <Recommend>
+      <h3 className="title">推荐文章</h3>
+      <div className="recommend-content">
+        <RecommendList list={recommended} />
+      </div>
+    </Recommend>
+  )
+}
 
 function AppSide() {
-  const recommendList = useAppSelector(selectRecommendList)
-  const tagList = useAppSelector(selectTagList)
-  const loading = useAppSelector(selectLoading)
-  const dispatch = useAppDispatch()
-
-  const { fetchAllTags, fetchRecommendPosts } = useAppAside()
-
-  useEffect(() => {
-    async function asyncFetchPosts() {
-      const { list } = await fetchRecommendPosts()
-      dispatch(setRecommendList(list))
-    }
-    async function asyncFetchTags() {
-      const { list } = await fetchAllTags()
-      dispatch(setTagList(list))
-    }
-    asyncFetchPosts()
-    asyncFetchTags()
-  }, [dispatch])
-  
-  
-  
   return (
     <SideWrap>
-      <Recommend>
-        <h3 className="title">推荐文章</h3>
-        <div className="recommend-content">
-          {loading ? (
-            <Box>
-              <Skeleton variant="text" />
-              <Skeleton variant="text" />
-              <Skeleton variant="text" />
-            </Box>
-          ) : (
-            <RecommendList list={recommendList} />
-          )}
-        </div>
-      </Recommend>
-      <TagCategory>
-        <h3 className="title">标签分类</h3>
-        <div className="tags-content">
-          {loading ? (
-            <Box>
-              <Skeleton variant="text" />
-              <Skeleton variant="text" />
-              <Skeleton variant="text" />
-            </Box>
-          ) : (
-            <TagList list={tagList} />
-          )}
-        </div>
-      </TagCategory>
+      <AsideRecommended />
+      <AsideTag />
     </SideWrap>
   )
 }

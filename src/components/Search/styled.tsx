@@ -46,26 +46,52 @@ export const ModalHeader = styled.div<ModalProps>`
 
   .search-input {
     color: inherit;
-    width: 80%;
     font-size: 1.2em;
+    flex: 1;
   }
 
   .search-cancel {
+    flex: none;
+    margin-left: 12px;
     color: inherit;
     appearance: none;
     background: none;
-    border: 0;
-    flex-shrink: 0;
-    padding: 4px 8px;
+    padding: 4px 10px;
     user-select: none;
+    cursor: pointer;
+    border-radius: 6px;
   }
 `
+
 export const ModalDropDown = styled.div<ModalProps>`
   min-height: 384px;
-  max-height: calc(600px - 73px);
+  //桌面端设置滚动窗口大小 移动端为全屏
+  max-height: ${(p) => (p.isDesktop ? 'calc(600px - 100px)' : 'calc(100vh - 73px)')};
   overflow-y: auto;
   padding: 0 12px;
   color: ${(p) => p.theme.colors.text};
+  display: flex;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 3px;
+  }
+  &::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块样式*/
+    border-radius: 100px;
+    -webkit-box-shadow: inset 0 0 5px rgba(151, 151, 151, 0.2);
+    background: rgba(0, 0, 0, 0.1);
+  }
+  &::-webkit-scrollbar-track {
+    /*滚动条里面轨道样式*/
+    -webkit-box-shadow: inset 0 0 5px rgba(223, 223, 223, 0.2);
+    border-radius: 100px;
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  .spinner {
+    margin: auto;
+  }
 
   .search-no-result {
     margin: 0 auto;
@@ -77,6 +103,7 @@ export const ModalDropDown = styled.div<ModalProps>`
 
   .search-result {
     padding: 8px 0;
+    width: 100%;
   }
 
   .list-item {

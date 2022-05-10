@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-
-import { SearchButton } from '@/components/Search'
+import { SearchDialog } from '@/components/Search'
 
 const SearchWrapper = styled.div`
   width: fit-content;
@@ -13,7 +12,7 @@ const SearchWrapper = styled.div`
 function DesktopSearchButton() {
   return (
     <SearchWrapper>
-      <SearchButton />
+      <SearchDialog />
     </SearchWrapper>
   )
 }

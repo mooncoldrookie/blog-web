@@ -4,11 +4,10 @@ import { Link } from '@mui/material'
 import { useRouter } from 'next/router'
 
 import settings from '@/settings'
-import { SearchButton } from '@/components/Search'
 import ThemeToggle from '@/components/ThemeToggle/'
-import { useAppSelector } from "@/app/hooks";
 
 import Logo from './Logo'
+import { SearchDialog } from '@/components/Search'
 
 const Header = styled.header`
   height: ${(p) => p.theme.desktopHeaderHeight};
@@ -67,18 +66,14 @@ const DesktopHeader = () => {
       <Nav>
         <Navbar>
           {settings.navItems.map((item) => (
-            <Link
-              key={item.key}
-              onClick={() => router.push(item.path)}
-              underline="none"
-            >
+            <a key={item.key} onClick={() => router.push(item.path)}>
               {item.name}
-            </Link>
+            </a>
           ))}
         </Navbar>
       </Nav>
       <SearchWrapper>
-        <SearchButton />
+        <SearchDialog />
       </SearchWrapper>
       <DesktopHeaderControl>
         <IconWrap>

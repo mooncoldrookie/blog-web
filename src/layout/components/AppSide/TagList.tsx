@@ -13,7 +13,8 @@ function TagList({ list }) {
       {list.map((item) => (
         <Link
           key={item.name}
-          onClick={() => router.push(`/tag/${item.name}`)}
+          target="_blank"
+          onClick={() => router.push({ pathname: `/posts/tag/${item.id}` })}
           underline="none"
         >
           <Chip label={item.name} />

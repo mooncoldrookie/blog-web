@@ -9,18 +9,29 @@ export const PostListWrap = styled.div`
     justify-content: center;
     transform: translateY(30%);
   }
+  .no-more {
+    margin-top: 24px;
+    font-size: 14px;
+    color: ${(p) => p.theme.colors.gray};
+  }
+  .no-posts {
+    margin-top: 100px;
+  }
 `
 
 export const PostItemWrap = styled.div`
-  padding-bottom: 18px;
-  border-bottom: 1px solid ${(p) => p.theme.colors.cardBorder};
-
-  &:last-child {
-    border-bottom: none;
+  .title-wrapper {
+  }
+  .publish-date {
+    color: ${(p) => p.theme.colors.gray};
   }
 
   .post-title {
     color: ${(p) => p.theme.colors.text};
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
   }
 
   .post-desc {
@@ -33,24 +44,5 @@ export const PostItemWrap = styled.div`
 
   &:hover .arrow-right {
     opacity: 1;
-  }
-
-  .description {
-    color: ${(p) => p.theme.colors.gray};
-    font-size: 14px;
-    padding: 0 16px;
-  }
-
-  .read-more {
-    height: 24px;
-    display: flex;
-    align-items: center;
-  }
-
-  .arrow-right {
-    margin-left: 4px;
-    font-size: 16px;
-    opacity: 0;
-    transition: opacity 0.3s;
   }
 `

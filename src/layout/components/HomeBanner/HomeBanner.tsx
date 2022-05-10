@@ -3,13 +3,14 @@ import React, { memo, useEffect, useMemo, useRef, useState } from 'react'
 import desktopBanner from '@/assets/images/desktopBanner1.jpg'
 import mobileBanner from '@/assets/images/mobileBanner1.jpg'
 import { useAppSelector } from '@/app/hooks'
-import { selectIsDesktop } from '@/layout/AppLayoutSlice'
+import { selectConfigs, selectIsDesktop } from '@/layout/AppLayoutSlice'
 import { getRandomInt } from '@/utils'
 
 import { BannerImage, BannerWrap, TextWrap } from './HomeBanner.styled'
 
-function HomeBanner(props) {
+function HomeBanner() {
   const isDesktop = useAppSelector(selectIsDesktop)
+  const configs = useAppSelector(selectConfigs)
   const titleRef = useRef<HTMLDivElement>(null)
   const [heartCount, setHeartCount] = useState(0)
 
@@ -34,14 +35,18 @@ function HomeBanner(props) {
 
   return (
     <BannerWrap>
-      <BannerImage src={isDesktop ? desktopBanner : mobileBanner} />
+      <BannerImage
+        src={
+          isDesktop
+            ? configs.desktopHomeBanner || desktopBanner
+            : configs.mobileHomeBanner || mobileBanner
+        }
+      />
       <TextWrap>
         <div className="banner-title" ref={titleRef}>
           SunMoon
           {styles.length &&
-            styles.map((style, index) => (
-              <span className="particle" style={style} key={index} />
-            ))}
+            styles.map((style, index) => <span className="particle" style={style} key={index} />)}
         </div>
       </TextWrap>
     </BannerWrap>

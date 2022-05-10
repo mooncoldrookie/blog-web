@@ -1,21 +1,16 @@
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 
-import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { getAbout } from '@/api/about'
+import { useAppDispatch, useAppSelector } from '@/app/hooks'
+import { getConfigs } from '@/api/config'
 
-import { selectIsDesktop, setFooterGreeting, setSiteName } from "./AppLayoutSlice";
+import { selectIsDesktop, setConfigs } from './AppLayoutSlice'
 import AppFooter from './components/AppFooter/AppFooter'
 import AppHeader from './components/AppHeader'
 import { AppSide } from './components/AppSide'
 import { HomeBanner } from './components/HomeBanner'
-import {
-  AppMainWrap,
-  FrameMain,
-  InnerMainWrap,
-  MainFull,
-  MainSide,
-} from './Layout.styled'
+import { AppMainWrap, FrameMain, InnerMainWrap, MainFull, MainSide } from './Layout.styled'
+import { recordAccess } from '@/api/base'
 
 function AppLayout({ children }) {
   const [isHome, setIsHome] = useState(false)
@@ -26,17 +21,18 @@ function AppLayout({ children }) {
 
   useEffect(() => {
     async function fetchSettings() {
-      const result: any = await getAbout()
-      if (result.code===0){
-        const settings = result.data
-        const siteName = settings.filter(item=>item.key==="siteName")[0].value
-        const footerGreeting = settings.filter(item=>item.key==="footerGreeting")[0].value
-        dispatch(setSiteName(siteName))
-        dispatch(setFooterGreeting(footerGreeting))
+      try {
+        const result = await getConfigs()
+        if (result.success) {
+          const configs = result.data
+          dispatch(setConfigs(configs))
+        }
+      } catch (e) {
+        console.log(e)
       }
     }
     fetchSettings()
-  },[])
+  }, [])
 
   useEffect(() => {
     setIsHome(asPath === '/')

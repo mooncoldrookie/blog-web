@@ -1,22 +1,42 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { AppState } from '@/app/store'
-import settings from "@/settings";
+import settings from '@/settings'
 
 export type Theme = 'light' | 'dark'
 
+export type ConfigsType = {
+  siteName: string
+  author: string
+  avatar: string
+  desktopHomeBanner: string
+  mobileHomeBanner: string
+  footerGreeting: string
+  aboutBanner: string
+  intro: string
+  description: string
+}
+
 export interface AppLayoutState {
   theme: Theme
-  isDesktop: boolean,
-  siteName:string,
-  footerGreeting:string
+  isDesktop: boolean
+  configs: ConfigsType
 }
 
 const initialState: AppLayoutState = {
   theme: 'light',
   isDesktop: true,
-  siteName: settings.title,
-  footerGreeting:settings.footerGreeting
+  configs: {
+    siteName: settings.siteName,
+    author: settings.author,
+    avatar: settings.avatar,
+    desktopHomeBanner: settings.desktopHomeBanner,
+    mobileHomeBanner: settings.mobileHomeBanner,
+    footerGreeting: settings.footerGreeting,
+    aboutBanner: settings.aboutBanner,
+    intro: settings.intro,
+    description: settings.description,
+  },
 }
 
 export const appLayoutSlice = createSlice({
@@ -36,13 +56,8 @@ export const appLayoutSlice = createSlice({
     setIsDesktop: (state, action: PayloadAction<boolean>) => {
       state.isDesktop = action.payload
     },
-    setSiteName:(state,action:PayloadAction<string>)=>{
-      if (action.payload==="")return
-      state.siteName=action.payload
-    },
-    setFooterGreeting:(state,action:PayloadAction<string>)=>{
-      if (action.payload==="")return
-      state.footerGreeting=action.payload
+    setConfigs: (state, action: PayloadAction<Partial<ConfigsType>>) => {
+      state.configs = { ...state.configs, ...action.payload }
     },
   },
 })
@@ -50,12 +65,10 @@ export const appLayoutSlice = createSlice({
 export const { setTheme } = appLayoutSlice.actions
 export const { toggleTheme } = appLayoutSlice.actions
 export const { setIsDesktop } = appLayoutSlice.actions
-export const { setSiteName } = appLayoutSlice.actions
-export const { setFooterGreeting } = appLayoutSlice.actions
+export const { setConfigs } = appLayoutSlice.actions
 
 export const selectTheme = (state: AppState) => state.appLayout.theme
 export const selectIsDesktop = (state: AppState) => state.appLayout.isDesktop
-export const selectSiteName = (state: AppState) => state.appLayout.siteName
-export const selectFooterGreeting = (state: AppState) => state.appLayout.footerGreeting
+export const selectConfigs= (state: AppState):ConfigsType => state.appLayout.configs
 
 export default appLayoutSlice.reducer

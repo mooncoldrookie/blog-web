@@ -16,18 +16,6 @@ export function getRandomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-export function filterSearchInput(value) {
-  return !(
-    value == null ||
-    value.trim() === '' ||
-    value.indexOf('%') !== -1 ||
-    value.indexOf('_') !== -1 ||
-    value.indexOf('[') !== -1 ||
-    value.indexOf('#') !== -1 ||
-    value.indexOf('*') !== -1 ||
-    value.trim().length > 20
-  )
-}
 
 export function setPageTitle(title: string) {
   if (window !== undefined) {

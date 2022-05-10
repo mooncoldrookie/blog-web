@@ -25,6 +25,7 @@ function NavMenu() {
   const handleClickItem = (path) => {
     router.push(path)
     setAnchorEl(null)
+    setOpen(false)
   }
 
   useEffect(() => {
@@ -49,11 +50,7 @@ function NavMenu() {
         TransitionComponent={Fade}
       >
         {settings.navItems.map((route) => (
-          <StyledItem
-            disableRipple
-            key={route.key}
-            onClick={() => handleClickItem(route.path)}
-          >
+          <StyledItem disableRipple key={route.key} onClick={() => handleClickItem(route.path)}>
             <a>{route.name}</a>
           </StyledItem>
         ))}

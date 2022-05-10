@@ -1,1 +1,1 @@
-export { default as PostCategory } from './PostCategory'
+export { default as CategoryList } from './CategoryList'

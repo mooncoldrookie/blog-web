@@ -13,7 +13,6 @@ export default function Custom500() {
   return (
     <Custom500Wrap>
       <h1>服务器异常</h1>
-      <h3>服务器出现异常</h3>
       <Link href="/">
         <a>返回主页</a>
       </Link>

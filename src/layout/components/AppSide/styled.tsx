@@ -52,7 +52,7 @@ export const RecommendListWrap = styled.ul`
   }
 `
 
-export const TagCategory = styled.div`
+export const AsideTagWrapper = styled.div`
   padding-top: 24px;
 
   .title {

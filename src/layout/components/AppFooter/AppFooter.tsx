@@ -1,8 +1,7 @@
 import React from 'react'
 
 import settings from '@/settings'
-import { useAppSelector } from "@/app/hooks";
-import { selectFooterGreeting } from "@/layout/AppLayoutSlice";
+import { useAppSelector } from '@/app/hooks'
 
 import {
   Footer,
@@ -15,13 +14,14 @@ import {
   TitleLogo,
   TitleWrapper,
 } from './styled'
+import { selectConfigs } from '@/layout/AppLayoutSlice'
 
 function AppFooter({ isDesktop }) {
-  const footerGreeting = useAppSelector(selectFooterGreeting)
   const present = 2021
   const fullYear = new Date().getFullYear()
   const date = fullYear > present ? `2021-${fullYear}` : '2021'
   const copyright = `© ${date} SunMoon. 保留所有权利.`
+  const configs = useAppSelector(selectConfigs)
 
   return (
     <Footer>
@@ -29,7 +29,7 @@ function AppFooter({ isDesktop }) {
         <TitleWrapper className="bp3-monospace-text">
           <TitleLogo>{settings.title}</TitleLogo>
           <Greeting>
-            {footerGreeting}
+            {configs.footerGreeting}
             <Heart />
           </Greeting>
         </TitleWrapper>

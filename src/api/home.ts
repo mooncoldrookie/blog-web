@@ -1,12 +1,21 @@
 import axios from '@/utils/request'
 
-export function getBlogList(page = 1, pageSize = 10) {
+export function getHomePosts() {
   return axios({
-    url: '/post/list',
+    url: '/blog/homePosts',
     method: 'GET',
-    params:{
-      page,
-      pageSize,
-    }
+  })
+}
+export function getRecommendedPosts() {
+  return axios({
+    url: '/blog/recommendedPosts',
+    method: 'GET',
+  })
+}
+
+export function getTags() {
+  return axios({
+    method: 'GET',
+    url: '/blog/tags',
   })
 }

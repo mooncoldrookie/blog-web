@@ -15,7 +15,7 @@ const ThemeToggleButton = styled.span`
   }
 `
 
-interface ThemeToggleProps extends React.HTMLAttributes<HTMLSpanElement> {}
+type ThemeToggleProps = React.HTMLAttributes<HTMLSpanElement>
 
 function ThemeToggle(props: ThemeToggleProps) {
   const toggleMode = useToggleTheme()

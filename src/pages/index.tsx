@@ -1,14 +1,15 @@
-import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { Link } from '@mui/material'
 import { useRouter } from 'next/router'
 
-import { getBlogList } from '@/api/home'
-import { PostList } from '@/components/PostList'
+import { getHomePosts } from '@/api/home'
 import { HomePageWrap } from '@/components/pages/home/styled'
 import { AppLayout } from '@/layout'
+import { PostListWrap } from '@/components/PostList/styled'
+import PostItem from '@/components/PostList/PostItem'
+import React, {useEffect} from 'react'
 
-export default function Home({data}) {
+export default function Home({ data }) {
   const router = useRouter()
   return (
     <AppLayout>
@@ -17,14 +18,19 @@ export default function Home({data}) {
           <title>首页</title>
         </Head>
         <h3 className="title">最新文章</h3>
-        <PostList posts={data.list} />
-        {data.list.length !== 0 && (
+        <PostListWrap>
+          {data.map((item) => (
+            <PostItem
+              id={item.id}
+              key={item.id}
+              title={item.title}
+              publishDate={item.publishDate}
+            />
+          ))}
+        </PostListWrap>
+        {data.length && (
           <div className="view-all">
-            <Link
-              className="view-all"
-              onClick={() => router.push('/posts')}
-              underline="none"
-            >
+            <Link className="view-all" onClick={() => router.push('/posts')} underline="none">
               查看全部文章
             </Link>
           </div>
@@ -34,11 +40,12 @@ export default function Home({data}) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const res = await getBlogList()
-
+export const getServerSideProps = async (context) => {
+  const result = await getHomePosts()
 
   return {
-    props: res
+    props: {
+      data: result.data,
+    },
   }
 }

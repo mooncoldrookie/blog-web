@@ -7,14 +7,16 @@ import { RecommendListWrap } from './styled'
 
 function RecommendList({ list }) {
   const router = useRouter()
+  const onClickItem = (item) => {
+    if (String(item.id) !== router.query.id) {
+      router.push(`/post/${item.id}`)
+    }
+  }
   return (
     <RecommendListWrap>
       {list.map((item) => (
         <li key={item.id} className="recommend-item">
-          <Link
-            onClick={() => router.push(`/post/${item.id}`)}
-            underline="none"
-          >
+          <Link onClick={() => onClickItem(item)} underline="none">
             <span className="arrow-right">
               <ArrowCircleRightOutlinedIcon className="arrow-right-icon" />
             </span>

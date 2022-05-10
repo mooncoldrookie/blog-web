@@ -3,9 +3,8 @@ import React, { memo } from 'react'
 import { useRouter } from 'next/router'
 import { Link } from '@mui/material'
 
-import { useAppSelector } from "@/app/hooks";
-import { selectSiteName } from "@/layout/AppLayoutSlice";
-
+import { useAppSelector } from '@/app/hooks'
+import { selectConfigs } from '@/layout/AppLayoutSlice'
 
 const StyledLogo = styled.div`
   font-size: 28px;
@@ -19,11 +18,11 @@ const StyledLogo = styled.div`
 
 function Logo() {
   const router = useRouter()
-  const siteName = useAppSelector(selectSiteName)
+  const configs = useAppSelector(selectConfigs)
   return (
     <StyledLogo>
       <Link underline="none" onClick={() => router.push('/')}>
-        {siteName}
+        {configs.siteName}
       </Link>
     </StyledLogo>
   )

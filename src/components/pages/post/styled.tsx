@@ -12,6 +12,11 @@ export const PostContent = styled.article`
     margin: 24px 0;
     word-wrap: break-word;
   }
+  .subtitle {
+    display: flex;
+    align-items: center;
+    gap: 1.5em;
+  }
 
   .post-content {
     min-height: 500px;

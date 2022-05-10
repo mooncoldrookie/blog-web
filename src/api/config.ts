@@ -1,10 +1,8 @@
 import axios from '@/utils/request'
 
-
-
-export function getAllTags() {
+export function getConfigs() {
   return axios({
-    url: '/tag/all',
+    url: '/config',
     method: 'GET',
   })
 }

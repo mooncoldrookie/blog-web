@@ -1,9 +1,20 @@
 const settings = {
   author: 'SunMoon',
   title: 'SunMoon',
+  siteName: 'SunMoon',
   intro: '不卑不亢,野蛮生长',
-  avatar:
-    'https://cdn.jsdelivr.net/gh/mooncoldrookie/blog-image-hosting-service@main/avatar.jpeg',
+  description: '',
+  avatar: '',
+  desktopHomeBanner: '',
+  mobileHomeBanner: '',
+  aboutBanner: '',
+  footerGreeting: '谢谢你的阅读',
+  footerLinks: [
+    { key: 'React', link: 'https://zh-hans.reactjs.org/' },
+    { key: 'Next.js', link: 'https://nextjs.org/' },
+    { key: 'Styled Components', link: 'www.styled-components.com/' },
+    { key: 'Material UI', link: 'https://mui.com/' },
+  ],
   navItems: [
     {
       key: 'home',
@@ -12,26 +23,14 @@ const settings = {
     },
     {
       key: 'posts',
-      name: '博文',
+      name: '全部文章',
       path: '/posts',
     },
     {
-      key: 'moments',
-      name: '动态',
-      path: '/moments',
-    },
-    {
       key: 'me',
-      name: '我',
+      name: '关于博客',
       path: '/me',
     },
-  ],
-  footerGreeting: '谢谢你的阅读',
-  footerLinks: [
-    { key: 'React', link: 'https://zh-hans.reactjs.org/' },
-    { key: 'Next.js', link: 'https://nextjs.org/' },
-    { key: 'Styled Components', link: 'www.styled-components.com/' },
-    { key: 'Material UI', link: 'https://mui.com/' },
   ],
 }
 

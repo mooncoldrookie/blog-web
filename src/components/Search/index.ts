@@ -1,1 +1,1 @@
-export { default as SearchButton } from './Search'
+export { default as SearchDialog } from './Search'

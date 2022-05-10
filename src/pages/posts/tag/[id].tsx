@@ -1,40 +1,41 @@
-import React, { useEffect, useState } from 'react'
-
-import { CategoryList } from '@/components/pages/posts'
-import { PostsPageWrapper } from '@/components/pages/posts/styled'
-import { setPageTitle } from '@/utils'
 import { AppLayout } from '@/layout'
-
+import { PostsPageWrapper } from '@/components/pages/posts/styled'
+import { PostListWrap } from '@/components/PostList/styled'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import PostItem from '@/components/PostList/PostItem'
-import { PostListWrap } from '@/components/PostList/styled'
-import { useRouter } from 'next/router'
-import { Skeleton } from '@mui/material'
-import { getPagingPosts } from '@/api/post'
+import React, { useEffect, useRef, useState } from 'react'
+import { getPostsByTag } from '@/api/post'
 import produce from 'immer'
+import { GetServerSideProps } from 'next/types'
+import { Skeleton } from '@mui/material'
+import { setPageTitle } from '@/utils'
 
-export function usePosts() {
+function usePostsByTag(tagId: number) {
+  const [posts, setPosts] = useState([])
   const [pagination, setPagination] = useState({
     page: 1,
     size: 10,
     total: 0,
   })
   const [loading, setLoading] = useState(false)
-
-  const [posts, setPosts] = useState([])
-
   const [hasMore, setHasMore] = useState(true)
+  const currentTag = useRef(null)
 
-  const fetchPagingPosts = async () => {
+  const fetchPostsByTag = async () => {
     try {
       setLoading(true)
       const params = {
         limit: pagination.size,
         offset: (pagination.page - 1) * pagination.size,
+        tagId,
       }
-      const result = await getPagingPosts(params)
+      const result = await getPostsByTag(params)
       if (result.success) {
-        const { list, total, page } = result.data
+        const { list, total, page, tag } = result.data
+        if (currentTag.current?.id !== tag.id) {
+          currentTag.current = tag
+          setPosts(() => [])
+        }
         setPosts(
           produce((draft) => {
             draft.push(...list)
@@ -53,7 +54,7 @@ export function usePosts() {
     }
   }
 
-  const loadMorePosts = async () => {
+  const loadMore = async () => {
     setPagination(
       produce((draft) => {
         draft.page += 1
@@ -65,44 +66,50 @@ export function usePosts() {
     setHasMore(pagination.total !== posts.length)
   }, [pagination.total, posts.length])
 
+  useEffect(() => {
+    if (currentTag.current) {
+      setPageTitle(currentTag.current.name)
+    }
+  }, [currentTag.current])
+
   return {
+    currentTag,
     loading,
-    hasMore,
-    pagination,
     posts,
     setPosts,
-    fetchPagingPosts,
-    loadMorePosts,
+    pagination,
+    fetchPostsByTag,
+    hasMore,
+    loadMore,
   }
 }
 
-function PostsPage() {
-  const router = useRouter()
-  const { loading, hasMore, pagination, posts, fetchPagingPosts, loadMorePosts } = usePosts()
-
-  const clickCategory = (category) => {
-    router.push(`/posts/category/${category.id}`)
-  }
+function PostsTag({ id }) {
+  const [tagId, setTagId] = useState(() => (isNaN(id) ? 0 : Number(id)))
+  const { currentTag, loading, posts, setPosts, fetchPostsByTag, pagination, hasMore, loadMore } =
+    usePostsByTag(tagId)
 
   useEffect(() => {
-    setPageTitle('全部文章')
-  }, [])
+    setTagId(isNaN(id) ? 0 : Number(id))
+  }, [id])
+
   useEffect(() => {
-    fetchPagingPosts()
-  }, [pagination.page])
+    fetchPostsByTag()
+  }, [pagination.page, tagId])
 
   return (
     <AppLayout>
       <PostsPageWrapper>
-        <CategoryList currentId={0} clickItem={clickCategory} />
-
         <div className="posts-container">
-          <div>共 {pagination.total} 条结果</div>
           <PostListWrap>
+            <div>
+              {pagination.total} 条关于
+              <span style={{ fontWeight: 'bold' }}> {currentTag.current?.name} </span>的内容
+            </div>
             {posts.length ? (
               <InfiniteScroll
                 dataLength={posts.length}
-                next={loadMorePosts}
+                next={loadMore}
                 hasMore={hasMore}
                 loader={<div>loading...</div>}
               >
@@ -124,4 +131,13 @@ function PostsPage() {
   )
 }
 
-export default PostsPage
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { query } = context
+  return {
+    props: {
+      id: query.id,
+    },
+  }
+}
+
+export default PostsTag
