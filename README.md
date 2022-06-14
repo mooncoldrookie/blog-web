@@ -1,5 +1,4 @@
 # My-Blog
-- 博客地址 https://github.com/mooncoldrookie/blog-client
 - 后台项目地址 https://github.com/mooncoldrookie/blog-admin
 - 服务端地址 https://github.com/mooncoldrookie/blog-server
 
@@ -10,10 +9,8 @@
 - react
 - next.js
 - material-ui
-- reduxjs/toolkit
 - styled-components
 
 ### 项目地址
-http://124.222.167.113:3000
+http://124.222.167.113:5000
 
-使用styled-components基于服务端渲染不是很方便, 有些功能还在构思中.
