@@ -7,7 +7,7 @@ import { getPostById } from '@/api/post'
 import { PostContent, PostWrap } from '@/components/pages/post/styled'
 import dayjs from '@/utils/date-format'
 import { AppLayout } from '@/layout'
-import MarkdownRenderer from '@/components/MarkdownRenderer'
+import HtmlRenderer from '@/components/HtmlRenderer'
 
 function PostPage({ post }) {
   return (
@@ -26,7 +26,7 @@ function PostPage({ post }) {
               <span className="sub-text">阅读量 {post.views}</span>
             </div>
             <div className="post-content ">
-              <MarkdownRenderer content={post.contentHtml} />
+              <HtmlRenderer html={post.contentHtml} />
             </div>
             <div className="post-footer">
               <p className="sub-text">

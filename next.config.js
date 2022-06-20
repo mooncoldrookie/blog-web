@@ -26,8 +26,8 @@ const nextConfig = {
     disableStaticImages: true,
   },
   env: {
-    API_URL: 'http://124.222.167.113:3000',
-  },
+    API_URL: 'http://124.222.167.113:7000'
+  }
 }
 
 module.exports = withPlugins([[withBundleAnalyzer], withImages], nextConfig)

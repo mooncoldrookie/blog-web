@@ -1,14 +1,9 @@
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react'
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react'
 import { ThemeProvider } from 'styled-components'
 
 import { darkTheme, lightTheme } from '@/utils/theme'
+import { useAppDispatch } from '@/app/hooks'
+import { setTheme } from '@/layout/AppLayoutSlice'
 
 const ThemeContext = createContext<undefined | (() => void)>(undefined)
 const ModeContext = createContext<undefined | string>(undefined)
@@ -16,15 +11,12 @@ const ModeContext = createContext<undefined | string>(undefined)
 export const useToggleTheme = () => useContext(ThemeContext)
 export const useMode = () => useContext(ModeContext)
 
-const MyThemeProvider = ({
-  children,
-}: {
-  children: ReactNode
-}): JSX.Element => {
-  const [theme, setTheme] = useState(lightTheme)
+const MyThemeProvider = ({ children }: { children: ReactNode }): JSX.Element => {
+  const [theme, configTheme] = useState(lightTheme)
   const [mode, setMode] = useState(lightTheme.mode)
+  const dispatch = useAppDispatch()
   const toggleMode = useCallback(() => {
-    setTheme(({ mode }) => {
+    configTheme(({ mode }) => {
       const newMode = mode === 'dark' ? lightTheme : darkTheme
       localStorage.setItem('MODE', newMode.mode)
       setMode(mode)
@@ -37,7 +29,9 @@ const MyThemeProvider = ({
     if (oldMode && oldMode !== theme.mode) {
       toggleMode()
     }
-  }, [theme.mode, toggleMode])
+    // @ts-ignore
+    dispatch(setTheme(theme.mode))
+  }, [dispatch, theme.mode, toggleMode])
 
   return (
     <ThemeContext.Provider value={toggleMode}>

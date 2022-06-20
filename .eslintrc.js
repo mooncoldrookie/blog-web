@@ -48,5 +48,6 @@ module.exports = {
     'jsx-a11y/click-events-have-key-events': 'off',
     'no-nested-ternary': 'off',
     'import/prefer-default-export': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
   },
 }
