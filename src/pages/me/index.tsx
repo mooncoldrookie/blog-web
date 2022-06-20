@@ -12,7 +12,6 @@ import { selectConfigs, selectIsDesktop } from '@/layout/AppLayoutSlice'
 import { getConfigs } from '@/api/config'
 import { setPageTitle } from '@/utils'
 import { AppLayout } from '@/layout'
-import MarkdownRenderer from '@/components/MarkdownRenderer'
 
 function MePage() {
   const isDesktop = useAppSelector(selectIsDesktop)
@@ -50,9 +49,7 @@ function MePage() {
             <h3>关于博客</h3>
           </div>
           <div className="about-main">
-            <div className="about-content ">
-              <MarkdownRenderer content={configs.description} />
-            </div>
+            <div className="about-content ">{configs.description}</div>
           </div>
         </ContentWrap>
       </AboutMePageWrap>
